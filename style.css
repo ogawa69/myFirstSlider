@@ -66,7 +66,7 @@ a {
 }
 
 .swiper-link::before {
-    content: url(../assets/img/dropdown.svg);
+    content: url(./assets/img/dropdown.svg);
 
     position: relative;
     left: 15px;

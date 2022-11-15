@@ -1,60 +1,57 @@
-const more768 = document.querySelectorAll('.more-768');
-const more1120 = document.querySelectorAll('.more-1120');
+const cards = document.querySelectorAll('.card');
+const btn = document.querySelector('.services__show-button');
+const isTablet = window.matchMedia("(min-width: 768px) and (max-width: 1119.98px)");
+const isDesktop = window.matchMedia("(min-width: 1120px)");
 
-if (window.innerWidth >= 768 && window.innerWidth < 1120) {
+const getEveryNth = (arr, nth) => {
+    const result = [];
 
-    let addCards768 = (value) => {
-        const btn = document.querySelector('.services__show-button');
-        const btn2 = document.querySelector('.services__hide-button');
-        btn.addEventListener('click', () => {
-            more768[value].style.display = 'flex';
-            btn.style.display = 'none';
-            btn2.style.display = 'flex';
-        })
+    for (let i = 3; i < arr.length; i += nth) {
+        result.push(arr[i]);
     }
 
-    let removeCards768 = (value) => {
-        const btn = document.querySelector('.services__hide-button');
-        const btn2 = document.querySelector('.services__show-button');
-        btn.addEventListener('click', () => {
-            more768[value].style.display = 'none';
-            btn.style.display = 'none';
-            btn2.style.display = 'flex';
-        })
-    }
+    return result;
+}
 
-    for (let i = 0; i < more768.length; i++) {
-        addCards768(i);
-        removeCards768(i);
+const hideItems = (arr, value) => {
+    value = value - 1;
 
+    for (let i = arr.length - 1; i > value;  i = i - 1) {
+        arr[i].classList.add('hidden')
     }
 }
 
-if (window.innerWidth >= 1120) {
-
-    let addCards1120 = (value) => {
-        const btn = document.querySelector('.services__show-button');
-        const btn2 = document.querySelector('.services__hide-button');
-        btn.addEventListener('click', () => {
-            more1120[value].style.display = 'flex';
-            btn.style.display = 'none';
-            btn2.style.display = 'flex';
-        })
-    }
-    
-    let removeCards1120 = (value) => {
-        const btn = document.querySelector('.services__hide-button');
-        const btn2 = document.querySelector('.services__show-button');
-        btn.addEventListener('click', () => {
-            more1120[value].style.display = 'none';
-            btn.style.display = 'none';
-            btn2.style.display = 'flex';
-        })
-    }
-    
-    for (let i = 0; i < more1120.length; i++) {
-        addCards1120(i);
-        removeCards1120(i);
-    
+const showItems = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].classList.remove('hidden');
     }
 }
+
+if (isTablet.matches) {
+    const getEveryFourthCard = getEveryNth(cards, 4);
+
+    for (let i = 0; i < getEveryFourthCard.length; i++) {
+        getEveryFourthCard[i].classList.add('hidden');
+    }
+
+    hideItems(cards, 8);
+}
+
+if (isDesktop.matches) {
+    hideItems(cards, 8);
+}
+
+btn.addEventListener('click', () => {
+    const img = btn.querySelector('img');
+    const txt = btn.querySelector('span');
+    
+    if (txt.textContent === 'Показать все') {
+        showItems(cards);
+        txt.textContent = 'Скрыть';
+        img.classList.toggle('services__expand-ico-down');
+    } else {
+        hideItems(cards, 8);
+        txt.textContent = 'Показать все';
+        img.classList.toggle('services__expand-ico-down');
+    }
+})
